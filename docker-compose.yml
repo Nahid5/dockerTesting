@@ -1,0 +1,33 @@
+#
+version: '3'
+
+services:
+
+  software:
+    build:
+      context: './build/nginx'
+    container_name: 'software'
+    depends_on:
+      - 'database'
+    ports:
+      - '80:80'
+      - '443:80'
+    restart: 'always'
+
+  database:
+    image: postgres
+    restart: always
+    container_name: 'database'
+    environment:
+        POSTGRES_DB: postgres
+        POSTGRES_USER: admin
+        POSTGRES_PASSWORD: secret
+        PGDATA: /var/lib/postgresql/data
+    volumes:
+        - db-data:/var/lib/postgresql/data
+    ports:
+        - "5432:5432"
+
+volumes:
+  db-data:
+  pgadmin-data:
